@@ -20,19 +20,23 @@ const questionsRouter = require('./routes/questions');
 const authenticationController = require('./controllers/authenticationController.js');
 const infoController = require('./controllers/infoController.js');
 
+
 app.use(
   cookieSession({
     name: 'session-name',
     keys: ['key1', 'key2'],
   }),
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-app.use('/assets', express.static(path.resolve(__dirname, '../client/components/assets/')));
-app.use(express.static(path.join(__dirname, '../client/')));
-app.use('/login', loginRouter.router);
+  );
+  
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use('/assets', express.static(path.resolve(__dirname, '../client/components/assets/')));
+  app.use(express.static(path.join(__dirname, '../client/')));
+  app.use('/login', loginRouter.router);
+  app.use('/build', express.static(path.resolve(__dirname, '../build/')));
 app.use('/questions', questionsRouter.router);
+
 app.get('/profile', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../client/index.html')));
 
 app.get('/getUserInfo', infoController.getUserInfo);
@@ -47,7 +51,6 @@ app.get('/logout', (req, res) => {
 });
 
 // app.post('/Messages', infoController.postMessageBoard, (req, res) => console.log('end of chain'));
-
 app.use('/*', authenticationController.checkUserLoggedIn, (req, res) => res.status(200).sendFile(path.join(__dirname, '../client/index.html')));
 app.use('*', (req, res) => {
   res.status(404).send('Not Found');
