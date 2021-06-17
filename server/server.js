@@ -1,3 +1,4 @@
+// * look at line 39 *
 const express = require('express');
 const path = require('path');
 const passport = require('passport');
@@ -34,6 +35,7 @@ app.use(
   app.use('/assets', express.static(path.resolve(__dirname, '../client/components/assets/')));
   app.use(express.static(path.join(__dirname, '../client/')));
   app.use('/login', loginRouter.router);
+  // serve build.js
   app.use('/build', express.static(path.resolve(__dirname, '../build/')));
 app.use('/questions', questionsRouter.router);
 
